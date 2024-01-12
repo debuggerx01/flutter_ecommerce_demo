@@ -1,0 +1,35 @@
+创建用户 - 返回 uid：1
+http://localhost:8787/user/login?mail=dx8917312@163.com
+
+查看用户信息 - 余额为零
+http://localhost:8787/user/info?uid=1
+
+添加购物车
+http://localhost:8787/cart/update?uid=1&item_id=1234&quantity=1
+
+查看购物车 - 查到刚添加的商品
+http://localhost:8787/cart/index?uid=1
+
+下单 - 提示余额不足
+http://localhost:8787/order/add?uid=1&item_id=1234&quantity=1
+
+充值余额 - 充值，返回账户新余额
+http://localhost:8787/user/add_balance?uid=1&amount=100000
+
+查看用户信息 - 查看充值后的新余额
+http://localhost:8787/user/info?uid=1
+
+下单 - 下单成功，返回剩余余额
+http://localhost:8787/order/add?uid=1&item_id=1234&quantity=1
+
+查看购物车 - 下单后商品移出购物车
+http://localhost:8787/cart/index?uid=1
+
+查看订单 - 查看刚下的单
+http://localhost:8787/order/index?uid=1
+
+查看用户信息 - 查看购物后的剩余余额
+http://localhost:8787/user/info?uid=1
+
+商品详情 - 查看销量变化
+http://localhost:8787/item/detail?item_id=1234
