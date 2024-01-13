@@ -32,7 +32,7 @@ export default {
 					.bind(searchParams.get('mail'))
 					.first();
 
-				if (uid != null) return Response.json({ uid });
+				if (uid != null) return Response.json({uid: uid.id});
 				await env.DB.prepare(
 					'INSERT INTO users (mail, balance) VALUES (?, ?)'
 				).bind(searchParams.get('mail'), 0)
@@ -43,16 +43,17 @@ export default {
 				)
 					.bind(searchParams.get('mail'))
 					.first();
-				return Response.json({ uid });
+				return Response.json({uid: uid.id});
 
 			// 获取用户信息
 			case '/user/info':
-				const { results } = await env.DB.prepare(
-					'SELECT * FROM users WHERE id = ?'
-				)
-					.bind(searchParams.get('uid'))
-					.all();
-				return Response.json(results);
+				return Response.json(
+					await env.DB.prepare(
+            'SELECT * FROM users WHERE id = ?'
+          )
+          	.bind(searchParams.get('uid'))
+          	.first()
+          );
 			// 获取用户信息
 			case '/user/add_balance':
 				const balanceResult = await env.DB.prepare(
