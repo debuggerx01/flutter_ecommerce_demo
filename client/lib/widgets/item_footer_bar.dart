@@ -109,9 +109,14 @@ class ItemFooterBar extends ConsumerWidget {
                     if (quantity * itemPrice > (userInfo?.balance ?? 0)) {
                       SmartDialog.showToast('余额不足，请先充值！');
                     }
-                    ref.read(orderProvider.notifier).addOrder(
+                    ref
+                        .read(orderProvider.notifier)
+                        .addOrder(
                           itemId: itemId,
                           quantity: quantity,
+                        )
+                        .then(
+                          (_) => SmartDialog.showToast('购买成功!'),
                         );
                   },
                 );
