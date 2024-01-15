@@ -71,8 +71,7 @@ class ItemFooterBar extends ConsumerWidget {
               label: Text(cartSize.toString()),
               child: ElevatedButton(
                 onPressed: () {
-                  var userInfo = ref.read(userInfoProvider).value;
-                  if (userInfo == null) {
+                  if (!loggedIn) {
                     showLoginDialog(ref);
                     return;
                   }
@@ -99,15 +98,15 @@ class ItemFooterBar extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                var userInfo = ref.read(userInfoProvider).value;
-                if (userInfo == null) {
+                if (!loggedIn) {
                   showLoginDialog(ref);
                   return;
                 }
+                var userInfo = ref.read(userInfoProvider).value;
                 showQuantityInputDialog().then(
                   (quantity) {
                     if (quantity == null) return;
-                    if (quantity * itemPrice > userInfo.balance) {
+                    if (quantity * itemPrice > (userInfo?.balance ?? 0)) {
                       SmartDialog.showToast('余额不足，请先充值！');
                     }
                     ref.read(orderProvider.notifier).addOrder(

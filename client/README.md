@@ -1,4 +1,4 @@
-# client
+# E-commerce Demo App 
 
 Large-Scale Application with Complex State Management.
 

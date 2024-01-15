@@ -87,6 +87,7 @@ class Apis {
         ),
       );
 
+  /// 商品列表
   Future<(List<Item>, bool)> items({
     required int categoryId,
     int? lastItemId,
@@ -105,6 +106,7 @@ class Apis {
         ),
       );
 
+  /// 商品详情
   Future<Item> itemDetail({required int itemId}) => _getJson(
         'item/detail',
         useUid: false,
@@ -113,12 +115,14 @@ class Apis {
         },
       ).then(Item.fromJson);
 
+  /// 购物车列表
   Future<List<Cart>> cartList() => _getList('cart/index').then((resp) => resp
       .map(
         (Cart.fromJson),
       )
       .toList());
 
+  /// 更新购物车
   Future<String> updateCart({
     required int itemId,
     required int quantity,
@@ -128,22 +132,26 @@ class Apis {
         'quantity': quantity.toString(),
       });
 
+  /// 收藏夹列表
   Future<List<Collection>> collectionList() => _getList('collection/index').then((resp) => resp
       .map(
         Collection.fromJson,
       )
       .toList());
 
+  /// 更新收藏夹
   Future<String> updateCollection({required int itemId}) => _get<String>('collection/update', query: {
         'item_id': itemId.toString(),
       });
 
+  /// 订单列表
   Future<List<Order>> orderList() => _getList('order/index').then((resp) => resp
       .map(
         Order.fromJson,
       )
       .toList());
 
+  /// 下单
   Future<int> addOrder({required int itemId, required int quantity}) => _getJson(
         'order/add',
         query: {
@@ -152,6 +160,7 @@ class Apis {
         },
       ).then((value) => value['balanceLeft'] as int);
 
+  /// 充值
   Future<int> addBalance(int amount) =>
       _getJson('/user/add_balance', query: {'amount': amount.toString()}).then((value) {
         return value['newBalance'] as int;
