@@ -45,10 +45,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: switch (context.t.brightness) {
-              Brightness.dark => context.t.colorScheme.onSurfaceVariant.withOpacity(0.1),
-              Brightness.light => context.t.colorScheme.secondaryContainer.withOpacity(0.5),
-            },
+            color: context.containerBgColor,
           ),
           margin: const EdgeInsets.all(10),
           child: homePages,

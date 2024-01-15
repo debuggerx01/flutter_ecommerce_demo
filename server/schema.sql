@@ -37,8 +37,9 @@ CREATE TABLE
     id INTEGER PRIMARY KEY,
     uid INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
-    item_title text not null,
+    item_title TEXT not null,
     item_price INTEGER NOT NULL,
+    item_cover TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     amount INTEGER NOT NULL,
     created_at INTEGER NOT NULL

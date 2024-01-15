@@ -54,7 +54,7 @@ export default {
           	.bind(searchParams.get('uid'))
           	.first()
           );
-			// 获取用户信息
+			// 充值余额
 			case '/user/add_balance':
 				const balanceResult = await env.DB.prepare(
 					'SELECT balance FROM users WHERE id = ?'
@@ -127,7 +127,8 @@ export default {
 					return {
 						...result,
 						title: foundItem?.title,
-						price: foundItem?.price
+						price: foundItem?.price,
+						cover: foundItem?.cover
 					};
 				}));
 
@@ -173,7 +174,8 @@ export default {
 					return {
 						...result,
 						title: foundItem?.title,
-						price: foundItem?.price
+						price: foundItem?.price,
+						cover: foundItem?.cover
 					};
 				}));
 
@@ -210,7 +212,8 @@ export default {
 					return {
 						...result,
 						title: foundItem?.title,
-						price: foundItem?.price
+						price: foundItem?.price,
+						cover: foundItem?.cover
 					};
 				}));
 
@@ -227,8 +230,8 @@ export default {
 				const balanceLeft = (userBalanceResult.balance as number) - totalCost;
 				if (balanceLeft < 0) return Response.json({ error: 'balance not enough!' });
 				await env.DB.prepare(
-					'INSERT INTO orders (uid, item_id, item_title, item_price, quantity, amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-				).bind(searchParams.get('uid'), orderItem.id, orderItem.title, orderItem.price, searchParams.get('quantity'), totalCost, now())
+					'INSERT INTO orders (uid, item_id, item_title, item_price, item_cover, quantity, amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+				).bind(searchParams.get('uid'), orderItem.id, orderItem.title, orderItem.price, orderItem.cover, searchParams.get('quantity'), totalCost, now())
 					.run();
 				await env.DB.prepare(
 					'DELETE FROM carts WHERE uid = ? AND item_id = ?'

@@ -5,6 +5,7 @@ import 'package:ecommerce_demo/apis/models/cart.dart';
 import 'package:ecommerce_demo/apis/models/category.dart';
 import 'package:ecommerce_demo/apis/models/collection.dart';
 import 'package:ecommerce_demo/apis/models/item.dart';
+import 'package:ecommerce_demo/apis/models/order.dart';
 import 'package:ecommerce_demo/apis/models/user.dart';
 import 'package:ecommerce_demo/riverpods/user.dart' show userIdProvider;
 import 'package:http/http.dart' show get;
@@ -21,12 +22,16 @@ class Apis {
     useUid = true,
     Map<String, String>? query,
   }) {
+    int? uid;
+    if (useUid) {
+      uid = reader(userIdProvider);
+    }
     var uri = Uri.https(
       baseUrl,
       path,
       {
         ...?query,
-        if (useUid) 'uid': reader(userIdProvider).toString(),
+        if (uid != null) 'uid': uid.toString(),
       },
     );
     print(uri);
@@ -61,7 +66,11 @@ class Apis {
       ).then((resp) => resp['uid'] as int);
 
   // 用户信息
-  Future<UserInfo> userInfo() => _getJson('user/info').then(UserInfo.fromJson);
+  Future<UserInfo> userInfo() => _getJson('user/info').catchError(
+        (e) {
+          reader(userIdProvider.notifier).clear();
+        },
+      ).then(UserInfo.fromJson);
 
   // 首页数据（分类信息和推荐列表）
   Future<(List<Category>?, List<Item>, bool)> homeData({int? lastItemId}) => _getJson(
@@ -127,5 +136,24 @@ class Apis {
 
   Future<String> updateCollection({required int itemId}) => _get<String>('collection/update', query: {
         'item_id': itemId.toString(),
+      });
+
+  Future<List<Order>> orderList() => _getList('order/index').then((resp) => resp
+      .map(
+        Order.fromJson,
+      )
+      .toList());
+
+  Future<int> addOrder({required int itemId, required int quantity}) => _getJson(
+        'order/add',
+        query: {
+          'item_id': itemId.toString(),
+          'quantity': quantity.toString(),
+        },
+      ).then((value) => value['balanceLeft'] as int);
+
+  Future<int> addBalance(int amount) =>
+      _getJson('/user/add_balance', query: {'amount': amount.toString()}).then((value) {
+        return value['newBalance'] as int;
       });
 }

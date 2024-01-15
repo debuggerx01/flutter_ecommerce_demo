@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cart.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Cart extends _$Cart {
   @override
   FutureOr<List<cart_model.Cart>> build() async {

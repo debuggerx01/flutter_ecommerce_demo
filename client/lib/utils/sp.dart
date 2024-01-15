@@ -12,5 +12,5 @@ class _Sp {
 
   int? get uid => prefs.getInt(_spUid);
 
-  set uid(value) => prefs.setInt(_spUid, value);
+  set uid(value) => value == null ? prefs.remove(_spUid) : prefs.setInt(_spUid, value);
 }

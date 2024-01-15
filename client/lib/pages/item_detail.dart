@@ -57,7 +57,7 @@ class ItemDetailPage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    ItemFooterBar(itemId: value.id),
+                    ItemFooterBar(itemId: value.id, itemPrice: value.price,),
                   ],
                 ),
               ),

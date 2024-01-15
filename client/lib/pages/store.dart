@@ -1,12 +1,10 @@
 import 'package:ecommerce_demo/apis/models/category.dart';
-import 'package:ecommerce_demo/apis/models/item.dart';
 import 'package:ecommerce_demo/riverpods/home_data.dart';
 import 'package:ecommerce_demo/widgets/item_list.dart';
 import 'package:ecommerce_demo/widgets/oops_widget.dart';
 import 'package:ecommerce_demo/widgets/welcome_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skeletons/skeletons.dart';
 
 class StorePage extends ConsumerWidget {
   const StorePage({super.key});

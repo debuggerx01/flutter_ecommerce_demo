@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'collection.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Collection extends _$Collection {
   @override
   FutureOr<List<collection_model.Collection>> build() async {

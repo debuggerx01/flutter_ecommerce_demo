@@ -6,6 +6,7 @@ class Cart {
   final int quantity;
   final int price;
   final String title;
+  final String cover;
 
   const Cart({
     required this.id,
@@ -15,6 +16,7 @@ class Cart {
     required this.quantity,
     required this.price,
     required this.title,
+    required this.cover,
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
@@ -25,5 +27,6 @@ class Cart {
         quantity: json['quantity'] as int,
         price: json['price'] as int,
         title: json['title'] as String,
+        cover: json['cover'] as String,
       );
 }

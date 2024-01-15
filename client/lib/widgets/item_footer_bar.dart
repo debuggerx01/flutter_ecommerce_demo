@@ -1,5 +1,6 @@
 import 'package:ecommerce_demo/riverpods/cart.dart';
 import 'package:ecommerce_demo/riverpods/collection.dart';
+import 'package:ecommerce_demo/riverpods/order.dart';
 import 'package:ecommerce_demo/riverpods/user.dart';
 import 'package:ecommerce_demo/utils/constants.dart';
 import 'package:ecommerce_demo/utils/extensions.dart';
@@ -7,13 +8,16 @@ import 'package:ecommerce_demo/utils/utils.dart';
 import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class ItemFooterBar extends ConsumerWidget {
   final int itemId;
+  final int itemPrice;
 
   const ItemFooterBar({
     super.key,
     required this.itemId,
+    required this.itemPrice,
   });
 
   @override
@@ -32,10 +36,7 @@ class ItemFooterBar extends ConsumerWidget {
       margin: const EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
-        color: switch (context.t.brightness) {
-          Brightness.dark => context.t.colorScheme.onSurfaceVariant.withOpacity(0.1),
-          Brightness.light => context.t.colorScheme.secondaryContainer.withOpacity(0.5),
-        },
+        color: context.containerBgColor,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -69,7 +70,22 @@ class ItemFooterBar extends ConsumerWidget {
             Badge(
               label: Text(cartSize.toString()),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  var userInfo = ref.read(userInfoProvider).value;
+                  if (userInfo == null) {
+                    showLoginDialog(ref);
+                    return;
+                  }
+                  showQuantityInputDialog().then(
+                    (quantity) {
+                      if (quantity == null) return;
+                      ref.read(cartProvider.notifier).updateCart(
+                            itemId: itemId,
+                            quantity: quantity,
+                          );
+                    },
+                  );
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(defaultPadding / 2),
                   child: Row(
@@ -82,7 +98,25 @@ class ItemFooterBar extends ConsumerWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                var userInfo = ref.read(userInfoProvider).value;
+                if (userInfo == null) {
+                  showLoginDialog(ref);
+                  return;
+                }
+                showQuantityInputDialog().then(
+                  (quantity) {
+                    if (quantity == null) return;
+                    if (quantity * itemPrice > userInfo.balance) {
+                      SmartDialog.showToast('余额不足，请先充值！');
+                    }
+                    ref.read(orderProvider.notifier).addOrder(
+                          itemId: itemId,
+                          quantity: quantity,
+                        );
+                  },
+                );
+              },
               child: const Padding(
                 padding: EdgeInsets.all(defaultPadding / 2),
                 child: Row(

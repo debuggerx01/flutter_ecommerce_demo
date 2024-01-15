@@ -5,6 +5,7 @@ class Collection {
   final int updatedAt;
   final int price;
   final String title;
+  final String cover;
 
   const Collection({
     required this.id,
@@ -13,6 +14,7 @@ class Collection {
     required this.updatedAt,
     required this.price,
     required this.title,
+    required this.cover,
   });
 
   factory Collection.fromJson(Map<String, dynamic> json) => Collection(
@@ -22,5 +24,6 @@ class Collection {
         updatedAt: json['updated_at'] as int,
         price: json['price'] as int,
         title: json['title'] as String,
+        cover: json['cover'] as String,
       );
 }
